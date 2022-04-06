@@ -6,10 +6,11 @@ import 'dart:io';
 
 class User {
   /*
-  Для добавления переменных необходимо сделать три действия:
+  Для добавления переменных необходимо сделать четыре действия:
   1) добавить переменную список ниже
   2) добавить её в список classParams
   3) в файле defines добавить имя в userParams
+  4) в конце функции parseUserDataCont дописать 'переменная' = classParams[variable++];
   Для корректной работы необходимо, чтобы последовательность переменных в пунктах 2 и 3 совпадало
   Когда добавляете новые переменные обязательно делайте это в конец, 
   так база данных сможет создать новые колонки без удаления и повторной установки
@@ -22,6 +23,7 @@ class User {
     d.dailyUser = User();
     print(d.dailyUser.age);
     //d.dailyUser.updateDataBaseValue('age', 40); //установить значение age пользователя в базе данных на 40, имена берутся из переменной d.userParams
+    //d.dailyUser.updateDataBaseString('name', 'федор'); // тоже что предыдущая, но принимает строки
     //d.dailyUser.rebuildDataBase(); //очистить базу данных полностью, применяется если меняли переменные класса и всё сломалось.
     d.dailyUser.name = 'вася' // изменить переменную имя на вася, в базу данных сохранять нужно отдельно
     d.dailyUser.age = 30;//
@@ -31,11 +33,13 @@ class User {
 
   //сюда добавлять переменные
   int userId = 1; // на данный момент константа, при желании можно переделать
-  String name = '';
+  String name = 'DefaultName';
   int age = 20;
-  String city = '';
+  String city = 'DefaultCity';
   double home = 3.4;
-  dynamic userDb = openDatabase(d.dbName);
+
+
+  dynamic userDb = openDatabase(d.dbName); // переменная статичная и не сохраняется в базе данных
   //
 
   User() //инициализация пользователя
@@ -92,18 +96,27 @@ class User {
     }
     for(int i = 0; i<userD.length;i++)
       {
-        //print('temp');
         var param = userD.values.elementAt(i);
         if(param!=null)
         {
-          //print(param);
         classParams[i] = param;
         }
         if (classParams[i] != param && classParams[i]!=Null && classParams[i].runtimeType!=String) {
         String updateSqlParamStr = 'UPDATE users SET ' + d.userParams[i].toString() + ' = ' + classParams[i].toString() + ' WHERE userId = 1';
         userDb.then((db) => db.execute(updateSqlParamStr));
         }
+        if (classParams[i] != param && classParams[i]!=Null && classParams[i].runtimeType==String) {
+          String updateSqlParamStr = 'UPDATE users SET ${d.userParams[i].toString()} = \'${classParams[i].toString()}\'';
+          userDb.then((db) => db.execute(updateSqlParamStr));
+        }
       }
+    // червёртое место, где нужно добавлять переменные при обновлении класса (списки по какой-то причине хранят только копии этих переменных)
+    int variable = 1;
+    name = classParams[variable++];
+    age = classParams[variable++];
+    city = classParams[variable++];
+    home = classParams[variable++];
+    //
   }
   updateDataBaseValue(String name, param)
   {
@@ -129,5 +142,10 @@ class User {
     String result = 'DROP TABLE users;';
     int temp;
     userDb.then((db) => temp = db.execute(result));
+  }
+  updateDataBaseString(String name, param)
+  {
+    String result = "UPDATE users SET $name = \'${param.toString()}\'";
+    userDb.then((db) => db.execute(result));
   }
 }

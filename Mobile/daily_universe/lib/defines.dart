@@ -9,4 +9,4 @@ late dynamic dailyUser; // указатель на объект пользова
 const List userParams = ['userId','name', 'age', 'city', 'home'];
 const List sqlDataTypes = ['INTEGER', 'TEXT', 'REAL']; // типы данных для sql, количество фиксированное, повторы не нужны
 const String dbName = 'my_db.db';
-bool first = true;
+bool firstClassInit = true;

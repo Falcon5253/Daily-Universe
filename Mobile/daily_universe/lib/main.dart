@@ -42,9 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _AddClass(){
-    if (d.first) {
+    if (d.firstClassInit) {
       d.dailyUser = User();
-      d.first = false;
+      d.firstClassInit = false;
     }
     //print(d.dailyUser.age);
     //d.dailyUser.updateDataBaseValue('age', 40);
