@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter = d.dailyUser.age;
       d.dailyUser.age ++;
       d.dailyUser.updateDataBaseValue('age', d.dailyUser.age);
+      //d.dailyUser.rebuildDataBase();
     });
   }
 

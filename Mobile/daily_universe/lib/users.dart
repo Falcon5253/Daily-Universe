@@ -23,15 +23,26 @@ class User {
     d.dailyUser = User();
     print(d.dailyUser.age);
     //d.dailyUser.updateDataBaseValue('age', 40); //установить значение age пользователя в базе данных на 40, имена берутся из переменной d.userParams
-    //d.dailyUser.updateDataBaseString('name', 'федор'); // тоже что предыдущая, но принимает строки
+    //d.dailyUser.updateDataBaseValue('name', 'федор'); // установить значение name на федор, необходимо передавать тип String
     //d.dailyUser.rebuildDataBase(); //очистить базу данных полностью, применяется если меняли переменные класса и всё сломалось.
     d.dailyUser.name = 'вася' // изменить переменную имя на вася, в базу данных сохранять нужно отдельно
-    d.dailyUser.age = 30;//
-  }
+    }
+
+    Пример оптимального обновления переменных с минимумом усилий:
+    {
+    String newName = 'федор';
+    int newAge = 30;
+    d.dailyUser.age = newAge; //ИЛИ d.dailyUser.age = 30;
+    d.dailyUser.updateDataBaseValue('age', d.dailyUser.age); //ИЛИ d.dailyUser.updateDataBaseValue(d.userParams[2], d.dailyUser.age);
+
+    d.dailyUser.name = newName; //ИЛИ d.dailyUser.name = 'федор';
+    d.dailyUser.updateDataBaseValue('name', d.dailyUser.name); //ИЛИ d.dailyUser.updateDataBaseValue(d.userParams[1], d.dailyUser.name);
+    }
+
 
    */
 
-  //сюда добавлять переменные
+  //сюда добавлять переменные. Поддерживаются только int, double и String.
   int userId = 1; // на данный момент константа, при желании можно переделать
   String name = 'DefaultName';
   int age = 20;
@@ -39,7 +50,7 @@ class User {
   double home = 3.4;
 
 
-  dynamic userDb = openDatabase(d.dbName); // переменная статичная и не сохраняется в базе данных
+  final userDb = openDatabase(d.dbName); // переменная статичная и не сохраняется в базе данных
   //
 
   User() //инициализация пользователя
@@ -120,7 +131,16 @@ class User {
   }
   updateDataBaseValue(String name, param)
   {
-    String result = "UPDATE users SET " + name + ' = ' + param.toString();
+    if(param.runtimeType!=String) {
+      String result = "UPDATE users SET " + name + ' = ' + param.toString();
+      userDb.then((db) => db.execute(result));
+    }
+    else
+      {updateDataBaseString(name, param);}
+  }
+  updateDataBaseString(String name, param)
+  {
+    String result = "UPDATE users SET $name = \'${param.toString()}\'";
     userDb.then((db) => db.execute(result));
   }
   fixColumn(int offset, classParams)
@@ -140,12 +160,14 @@ class User {
   rebuildDataBase()
   {
     String result = 'DROP TABLE users;';
-    int temp;
-    userDb.then((db) => temp = db.execute(result));
+    userDb.then((db) {
+      final temp = db.execute(result);
+      temp.whenComplete(() => exit(0));
+    });
   }
-  updateDataBaseString(String name, param)
+  /*testUpdateAll(String name,variable ,param) //не работает
   {
-    String result = "UPDATE users SET $name = \'${param.toString()}\'";
-    userDb.then((db) => db.execute(result));
-  }
+    updateDataBaseString(name, param);
+    variable = param;
+  }*/
 }
