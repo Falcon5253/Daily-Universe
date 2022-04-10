@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'dart:convert';
 
 void main(){
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     return MaterialApp(
         theme: ThemeData(primaryColor: Colors.blue),
         home: Scaffold(
-          appBar: AppBar(title: Text('Checklists'),),
-          body: SizedBox(
+          appBar: AppBar(title: const Text('Checklists'),),
+          body: const SizedBox(
             child: Home()
           )
       )
@@ -24,21 +23,21 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatefulWidget{
   const Home({Key? key}) : super(key: key);
+
   @override
   State<Home> createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
+  
   @override
-
   Widget build(BuildContext context) {
-    var Widgets = [MyCheckbox(), MyButton()];
+    var widgetsList = [const MyCheckbox(), const MyButton()];
     return Scaffold(
-        body: Container(
-          //MediaQuery methods in use
+        body: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: MediaQuery.of(context).size.height,
           child: Column(
-            children: Widgets,
+            children: widgetsList,
           ),
         )
     );
@@ -49,6 +48,7 @@ class _HomeState extends State<Home> {
 
 class MyCheckbox extends StatefulWidget{
   const MyCheckbox({Key? key}) : super(key: key);
+
   @override
   State<MyCheckbox> createState() => _MyCheckboxState();
 }
@@ -58,42 +58,43 @@ class _MyCheckboxState extends State<MyCheckbox> {
   @override
   Widget build(BuildContext context){
     return Checkbox(
-        value: isChecked,
-        onChanged: (bool? value){
-          setState(() {
-            isChecked = value!;
-          });
-        }
+      value: isChecked,
+      onChanged: (bool? value){
+        setState(() {
+          isChecked = value!;
+        });
+      }
     );
   }
 }
 
 class MyButton extends StatefulWidget {
   const MyButton({Key? key}) : super(key: key);
+
   @override
   State<MyButton> createState() => _MyButtonState();
 }
 class _MyButtonState extends State<MyButton> {
+
+  @override
   Widget build(BuildContext context){
-  return ElevatedButton(
-    onPressed: () {
+    return ElevatedButton(
+      onPressed: () {
 
-    },
-    child: Wrap(
-      children: <Widget>[
-        Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 24.0,
-        ),
-        SizedBox(
-          width: 10,
-
-        ),
-        Text("Add", style:TextStyle(fontSize:20)),
-      ],
-    ),
-
+      },
+      child: Wrap(
+        children: const <Widget>[
+          Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 24.0,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text("Add", style:TextStyle(fontSize:20)),
+        ],
+      ),
     );
   }
 }
