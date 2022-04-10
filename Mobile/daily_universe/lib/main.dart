@@ -28,10 +28,44 @@ class Home extends StatefulWidget{
   State<Home> createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
-  
+  bool isChecked = false;
+  void addCheckbox(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    var widgetsList = [const MyCheckbox(), const MyButton()];
+    var widgetsList = [
+      ElevatedButton(
+        onPressed: () {
+          addCheckbox();
+        },
+        child: Wrap(
+          children: const <Widget>[
+            Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 24.0,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text("Add", style:TextStyle(fontSize:20)),
+          ],
+        ),
+      ),
+      Checkbox(
+        value: isChecked,
+        onChanged: (bool? value){
+          setState(() {
+            isChecked = value!;
+          });
+        }
+      ),
+    ];
+
+
+
     return Scaffold(
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -40,61 +74,6 @@ class _HomeState extends State<Home> {
             children: widgetsList,
           ),
         )
-    );
-  }
-}
-
-
-
-class MyCheckbox extends StatefulWidget{
-  const MyCheckbox({Key? key}) : super(key: key);
-
-  @override
-  State<MyCheckbox> createState() => _MyCheckboxState();
-}
-class _MyCheckboxState extends State<MyCheckbox> {
-  bool isChecked = false;
-
-  @override
-  Widget build(BuildContext context){
-    return Checkbox(
-      value: isChecked,
-      onChanged: (bool? value){
-        setState(() {
-          isChecked = value!;
-        });
-      }
-    );
-  }
-}
-
-class MyButton extends StatefulWidget {
-  const MyButton({Key? key}) : super(key: key);
-
-  @override
-  State<MyButton> createState() => _MyButtonState();
-}
-class _MyButtonState extends State<MyButton> {
-
-  @override
-  Widget build(BuildContext context){
-    return ElevatedButton(
-      onPressed: () {
-
-      },
-      child: Wrap(
-        children: const <Widget>[
-          Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 24.0,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text("Add", style:TextStyle(fontSize:20)),
-        ],
-      ),
     );
   }
 }
