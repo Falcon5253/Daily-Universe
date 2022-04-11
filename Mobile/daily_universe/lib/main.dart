@@ -4,8 +4,13 @@ void main(){
   runApp(const MyApp());
 }
 
+bool isChecked = false;
+
+
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context){
@@ -24,56 +29,35 @@ class MyApp extends StatelessWidget {
 class Home extends StatefulWidget{
   const Home({Key? key}) : super(key: key);
 
+
+  
   @override
   State<Home> createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
-  bool isChecked = false;
-  void addCheckbox(){
-
-  }
-
+  final Map<String, bool> _map = {};
+  int _count = 0;
+  
   @override
   Widget build(BuildContext context) {
-    var widgetsList = [
-      ElevatedButton(
-        onPressed: () {
-          addCheckbox();
-        },
-        child: Wrap(
-          children: const <Widget>[
-            Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 24.0,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text("Add", style:TextStyle(fontSize:20)),
-          ],
-        ),
-      ),
-      Checkbox(
-        value: isChecked,
-        onChanged: (bool? value){
-          setState(() {
-            isChecked = value!;
-          });
-        }
-      ),
-    ];
-
-
-
     return Scaffold(
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: widgetsList,
-          ),
-        )
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => setState(() => _map.addEntries([MapEntry('Checkbox #${++_count}', false)])),
+      ),
+      body: ListView(
+        children: _map.keys
+            .map(
+              (key) => CheckboxListTile(
+                value: _map[key],
+                onChanged: (value) => setState(() => _map[key] = value!),
+                subtitle: Text(key),
+              ),
+            )
+            .toList(),
+            
+      ),
     );
   }
 }
