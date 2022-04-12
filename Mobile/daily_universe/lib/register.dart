@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'users.dart';
 import 'defines.dart' as d;
 import 'package:crypto/crypto.dart';
 import 'dart:convert' show utf8;
@@ -12,56 +11,46 @@ class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
 
   @override
-  State<Registration> createState() => _LoginState();
+  State<Registration> createState() => _RegistrationState();
 }
 
-class _LoginState extends State<Registration> {
+class _RegistrationState extends State<Registration> {
   @override
-  final _sizeTextBlack = const TextStyle(fontSize: 20.0, color: Colors.black);
-  final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: Colors.white);
-  final _colorUnderScopes = const UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.white),);
+  final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
-  String sex = 'М';
+  String gender = 'М';
   Widget build(BuildContext context) {
     void hideKeyboard() {
       FocusScope.of(context).unfocus();
     }
     void performLogin() {
       hideKeyboard();
-     // Navigator.push(
-     //     _context,
-      //    MaterialPageRoute(
-         //     builder: (context) =>  SecondScreen(_email, _password)));
+      Navigator.pushReplacementNamed(context, '/main');
     }
     void submit() {
       final form = formKey.currentState;
       if(form!=null) {
         if (form.validate()) {
-          d.dailyUser.sex = sex == 'М'? 1:2;
-          d.dailyUser.updateDataBaseValue('sex', d.dailyUser.sex);
+          d.dailyUser.gender = gender == 'М'? 1:2;
+          d.dailyUser.updateDataBaseValue('gender', d.dailyUser.gender);
+          d.dailyUser.autoLogin=0;
+          d.dailyUser.updateDataBaseValue('autoLogin', d.dailyUser.autoLogin);
           form.save();
           performLogin();
         }
       }
     }
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.light().copyWith( primary: Colors.grey),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: d.defaultBackgroundColor,
+      appBar: AppBar(
+        title: d.defaultTitle,
+        centerTitle: true,
       ),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey[900],
-        appBar: AppBar(
-          title: Text('Daily universe', style: TextStyle(color: Colors.white, fontSize: 28)),
-
-          centerTitle: true,
-        ),
         body: Center(
         child: Form(
         key: formKey,
             child:  Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                  Container(
                   child:  TextFormField( //mail
@@ -77,7 +66,7 @@ class _LoginState extends State<Registration> {
                     },
                     decoration:  InputDecoration(labelText: "Почта",
                     labelStyle: _sizeTextWhite,
-                    enabledBorder: _colorUnderScopes,
+                    enabledBorder: d.defaultUnderLineTextInputColor,
 
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -99,7 +88,7 @@ class _LoginState extends State<Registration> {
                       }
                       return 'Empty password field';
                     },
-                    decoration: InputDecoration(labelText: "Пароль", labelStyle: _sizeTextWhite, enabledBorder: _colorUnderScopes,),
+                    decoration: InputDecoration(labelText: "Пароль", labelStyle: _sizeTextWhite, enabledBorder: d.defaultUnderLineTextInputColor,),
                     obscureText: true,
                     style: _sizeTextWhite,
                   ),
@@ -120,7 +109,7 @@ class _LoginState extends State<Registration> {
                       }
                       return 'Empty name field';
                     },
-                    decoration: InputDecoration(labelText: "Имя", labelStyle: _sizeTextWhite, enabledBorder: _colorUnderScopes,),
+                    decoration: InputDecoration(labelText: "Имя", labelStyle: _sizeTextWhite, enabledBorder: d.defaultUnderLineTextInputColor,),
                   //  obscureText: true,
                     style: _sizeTextWhite,
                   ),
@@ -130,7 +119,6 @@ class _LoginState extends State<Registration> {
                  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: <Widget>[
-                       //Padding(padding: EdgeInsets.only(left: 1)),
                        Container(
                      padding: EdgeInsets.only(left: 5.0),
                      child:  TextFormField(//age
@@ -149,7 +137,7 @@ class _LoginState extends State<Registration> {
                    },
                 decoration:  InputDecoration(labelText: "Возраст",
                   labelStyle: _sizeTextWhite,
-                  enabledBorder: _colorUnderScopes,
+                  enabledBorder: d.defaultUnderLineTextInputColor,
 
                 ),
                 keyboardType: TextInputType.number,
@@ -160,7 +148,7 @@ class _LoginState extends State<Registration> {
                        Container(
                          padding: EdgeInsets.only(top: 40.0),
                          child:  DropdownButton<String>(
-                           style: const TextStyle(color: Colors.white),
+                           style: const TextStyle(color: d.defaultTextColor),
                            items: <String>['М', 'Ж'].map((String value) {
                              return DropdownMenuItem<String>(
                                value: value,
@@ -168,15 +156,15 @@ class _LoginState extends State<Registration> {
                              );
                            }).toList(),
                            dropdownColor: Colors.grey,
-                           value: sex,
+                           value: gender,
                            onChanged: (String? newValue) {
                              setState((){
                                if(newValue!=null) {
-                                 sex = newValue;
+                                 gender = newValue;
                                }
                              });
                            },
-                           underline: Container( height: 2, color: Colors.grey,),
+                           underline: d.defaultUnderLineDropDownListColor,
                          ),
                          width: 150.0,
                        ),
@@ -186,7 +174,7 @@ class _LoginState extends State<Registration> {
                   child:  MaterialButton(
                     color: Theme
                         .of(context)
-                        .colorScheme.secondary,
+                        .colorScheme.primary,
                     height: 50.0,
                     minWidth: 150.0,
                     onPressed: submit,
@@ -200,8 +188,7 @@ class _LoginState extends State<Registration> {
             )
         )
         ),
-      ),
-    );
+      );
   }
 }
 

@@ -51,9 +51,10 @@ class User {
   String name = '';
   int age = 20;
   String city = '';
-  int sex = 0; //0-не указан, 1-м, 2-ж
+  int gender = 0; //0-не указан, 1-м, 2-ж
   String mail = '';
   String passHash = '';
+  int autoLogin = 0; //1-да
   //...................................................................
 
 
@@ -67,7 +68,7 @@ class User {
   }
   parseUserData(Database db)
   {
-    List classParams = [userId,name,age,city,sex,mail,passHash];
+    List classParams = [userId,name,age,city,gender,mail,passHash,autoLogin];
     if(classParams.length!=d.userParams.length) { print('classParams.length!=d.userParams.length');exit(1);}
     String result = 'CREATE TABLE IF NOT EXISTS users(userId INTEGER PRIMARY KEY,';
     for(var i = 1; i<d.userParams.length;i++) { //в этом цикле создаётся файл сохранения и обновляются колонки
@@ -129,9 +130,10 @@ class User {
     name = classParams[variable++];
     age = classParams[variable++];
     city = classParams[variable++];
-    sex = classParams[variable++];
+    gender = classParams[variable++];
     mail = classParams[variable++];
     passHash = classParams[variable++];
+    autoLogin = classParams[variable++];
     //....................................................
   }
   void updateDataBaseValue(String name, param)

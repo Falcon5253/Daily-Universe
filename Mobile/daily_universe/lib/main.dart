@@ -4,6 +4,7 @@ import 'users.dart';
 import 'defines.dart' as d;
 import 'register.dart';
 import 'login.dart';
+import 'crossroads.dart';
 
 /*
 stless быстрое создание класса с виджетом; initstate быстрое создание функции
@@ -21,13 +22,14 @@ void userClassInit() {
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
-      colorScheme: ColorScheme.light().copyWith( primary: Colors.grey),
+      colorScheme: d.defaultTopColor,
     ),
     initialRoute: '/',
     routes: {
       '/': (context) => MainScreen(),
       '/log': (context) => Login(),
       '/reg': (context) => Registration(),
+      '/main': (context) => Crossroads(),
     },
   ));
 
@@ -41,39 +43,41 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (d.firstClassInit) {
-      d.deviceHeight = (MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio).round();
-      d.deviceWidth = (MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio).round();
+      d.deviceVirtualHeight = MediaQuery.of(context).size.height.round();
+      d.deviceVirtualWidth = MediaQuery.of(context).size.width.round();
+      d.deviceRealHeight = (MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio).round();
+      d.deviceRealWidth = (MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio).round();
       }
     userClassInit();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey[900],
+        backgroundColor: d.defaultBackgroundColor,
         appBar: AppBar(
-          title: Text('Daily universe', style: TextStyle(color: Colors.white, fontSize: 28)),
+          title: d.defaultTitle,
           centerTitle: true,
         ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(padding: EdgeInsets.only(top: d.deviceHeight/16)),
-            Text('Вы хотите авторизироваться?', style: TextStyle(color: Colors.white, fontSize: 36),textAlign: TextAlign.center,),
-            Padding(padding: EdgeInsets.only(top: d.deviceHeight/64)),
+            Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/16)),
+            Text('Вы хотите авторизироваться?', style: TextStyle(color: d.defaultTextColor, fontSize: 36),textAlign: TextAlign.center,),
+            Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/64)),
             SizedBox(
-              width: d.deviceWidth/4,
-              height: d.deviceHeight/30,
+              width: d.deviceRealWidth/4,
+              height: d.deviceRealHeight/30,
               child: ElevatedButton(onPressed: () {
-              Navigator.pushReplacementNamed(context, '/log');
-            }, child: Text('Войти в аккаунт', style: TextStyle(color: Colors.white, fontSize: 18)),),
+              Navigator.pushNamed(context, d.dailyUser.autoLogin==1?'/main':'/log');
+            }, child: Text('Войти в аккаунт', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
-            Padding(padding: EdgeInsets.only(top: d.deviceHeight/128)),
+            Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/128)),
             SizedBox(
-              width: d.deviceWidth/4,
-              height: d.deviceHeight/30,
+              width: d.deviceRealWidth/4,
+              height: d.deviceRealHeight/30,
               child: ElevatedButton(onPressed: () {
-                Navigator.pushReplacementNamed(context, '/reg');
-              }, child: Text('Зарегистрироваться', style: TextStyle(color: Colors.white, fontSize: 18)),),
+                Navigator.pushNamed(context, '/reg');
+              }, child: Text('Зарегистрироваться', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
 
           ],

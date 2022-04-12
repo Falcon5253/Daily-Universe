@@ -4,12 +4,20 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:ffi';
 
 late dynamic dailyUser; // указатель на объект пользователя. По идее инициализируется при старте программы, затем присваивается сюда и используется отсюда
-//late Database dataBase; // открытый объект SQL базы данных
 
 // имена переменных класса пользователя, используются для работы с базой sql, т.к. объекты по имени во flutter не вызвать. Необходимо дублировать в файле user.dart
-const List userParams = ['userId','name', 'age', 'city','sex','mail','passHash'];
+const List userParams = ['userId','name', 'age', 'city','gender','mail','passHash','autoLogin'];
 const List sqlDataTypes = ['INTEGER', 'TEXT', 'REAL']; // типы данных для sql, количество фиксированное, повторы не нужны
+const List typesGender = ['X', 'Мужской', 'Женский'];
 const String dbName = 'my_db.db';
 bool firstClassInit = true;
-late int deviceWidth; //Ширина в пикселях текущего уст-ва
-late int deviceHeight; //Высота в пикселях текущего уст-ва
+late int deviceRealWidth; //Ширина в пикселях текущего уст-ва
+late int deviceRealHeight; //Высота в пикселях текущего уст-ва
+late int deviceVirtualWidth;
+late int deviceVirtualHeight;
+const Color defaultTextColor = Colors.white;
+Color? defaultBackgroundColor = Colors.grey[900];
+ColorScheme? defaultTopColor = const ColorScheme.light().copyWith( primary: Colors.grey);
+Widget? defaultTitle = const Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
+const defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: Colors.white),);
+final defaultUnderLineDropDownListColor = Container( height: 2, color: Colors.grey,);
