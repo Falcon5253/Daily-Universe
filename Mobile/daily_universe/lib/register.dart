@@ -18,7 +18,7 @@ class _RegistrationState extends State<Registration> {
   @override
   final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
-  String gender = 'М';
+  String gender = 'Пол';
   Widget build(BuildContext context) {
     void hideKeyboard() {
       FocusScope.of(context).unfocus();
@@ -31,7 +31,7 @@ class _RegistrationState extends State<Registration> {
       final form = formKey.currentState;
       if(form!=null) {
         if (form.validate()) {
-          d.dailyUser.gender = gender == 'М'? 1:2;
+          d.dailyUser.gender = gender == 'М'? 1:gender == 'Ж'?2:0;
           d.dailyUser.updateDataBaseValue('gender', d.dailyUser.gender);
           d.dailyUser.autoLogin=0;
           d.dailyUser.updateDataBaseValue('autoLogin', d.dailyUser.autoLogin);
@@ -149,7 +149,7 @@ class _RegistrationState extends State<Registration> {
                          padding: EdgeInsets.only(top: 40.0),
                          child:  DropdownButton<String>(
                            style: const TextStyle(color: d.defaultTextColor),
-                           items: <String>['М', 'Ж'].map((String value) {
+                           items: <String>['Пол','М', 'Ж'].map((String value) {
                              return DropdownMenuItem<String>(
                                value: value,
                                child: Text(value),

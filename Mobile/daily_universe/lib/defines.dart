@@ -8,7 +8,7 @@ late dynamic dailyUser; // указатель на объект пользова
 // имена переменных класса пользователя, используются для работы с базой sql, т.к. объекты по имени во flutter не вызвать. Необходимо дублировать в файле user.dart
 const List userParams = ['userId','name', 'age', 'city','gender','mail','passHash','autoLogin'];
 const List sqlDataTypes = ['INTEGER', 'TEXT', 'REAL']; // типы данных для sql, количество фиксированное, повторы не нужны
-const List typesGender = ['X', 'Мужской', 'Женский'];
+const List typesGender = ['Не указан', 'Мужской', 'Женский'];
 const String dbName = 'my_db.db';
 bool firstClassInit = true;
 late int deviceRealWidth; //Ширина в пикселях текущего уст-ва
