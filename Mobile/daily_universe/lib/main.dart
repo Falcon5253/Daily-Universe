@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
             hasScrollBody: false,
             child: Column(children: _map.keys
                     .map(
-                      (key) => CheckField(key, _map[key]![0] == "true", _map[key]![1]),
+                      (key) => CheckField(key, _map),
                     ).toList(),
                   ),
           )
@@ -63,40 +63,29 @@ class _HomeState extends State<Home> {
   }
 }
 
-// body: ListView(
-//   children: _map.keys
-//       .map(
-//         (key) => CheckboxListTile(
-//           value: _map[key],
-//           onChanged: (value) => setState(() => _map[key] = value!),
-//           subtitle: Text(key),
-//         ),
-//       )
-//       .toList(),
-// ),
-
-// ignore: must_be_immutable
 class CheckField extends StatefulWidget {
-  int id = 0;
-  bool value = false;
-  String text = "";
-  CheckField(this.id, this.value, this.text, {Key? key}) : super(key: key);
+  int id;
+  Map<int, List<String>> _map = {};
+  CheckField(this.id, this._map, {Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  State<CheckField> createState() => _CheckFieldState(id, value, text);
+  State<CheckField> createState() => _CheckFieldState(id, _map);
 }
 
 class _CheckFieldState extends State<CheckField> {
-  int id = 0;
-  bool value = false;
-  String text = "";
-  _CheckFieldState(this.id, this.value, this.text);
+  int id;
+  Map<int, List<String>> _map = {};
+  _CheckFieldState(this.id, this._map,);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () { print("Container number $id was tapped"); },
+      onTap: () { 
+        bool newValue = _map[id]![0] == "true";
+        _map[id]![1] = newValue.toString();
+        print("Container number $id was tapped");
+      },
       child: Container(
               margin: const EdgeInsets.only(top: 10),
               width: MediaQuery.of(context).size.width - 20,
@@ -120,14 +109,20 @@ class _CheckFieldState extends State<CheckField> {
               ),
               child: Row(
                 children: [
-                  Checkbox(value: value, onChanged: onChange),
+                  Checkbox(value: _map[id]![0] == "true", onChanged: (value) => setState(() {
+                    bool newValue = !value!;
+                    _map[id]![0] = newValue.toString();
+                    print(id);
+                    print(_map[id]![1]);
+                    print(value);
+                  })),
                   SizedBox(
-                    child: Text(text),
+                    child: Text(_map[id]![1].toString()),
                     width: 100,
                   ),
                   SizedBox(
                     width: 100,
-                    child: Text(value.toString())
+                    child: Text(_map[id]![0].toString())
                   )
                 ],
               ),
