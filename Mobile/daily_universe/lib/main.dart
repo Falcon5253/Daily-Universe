@@ -34,20 +34,21 @@ class Home extends StatefulWidget{
 }
 
 class _HomeState extends State<Home> {
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => setState(() => map.addEntries([MapEntry(++count, ["false", "text $count"])])),
+        onPressed: () => setState(() => checkboxesList.addEntries([MapEntry(++counter, ["false", "text $counter"])])),
       ),
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              children: map.keys.map( (key) => const CheckField()).toList()
+              children: checkboxesList.keys.map( (key) => CheckField(key)).toList()
             )
           )
         ]
