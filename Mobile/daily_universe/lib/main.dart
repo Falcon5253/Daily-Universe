@@ -36,7 +36,7 @@ class Home extends StatefulWidget{
 
 
 class _HomeState extends State<Home> {
-  final Map<String, bool> _map = {};
+  final Map<int, List<String>> _map = {};
   int _count = 0;
   List<Widget> checkRow = [];
   
@@ -46,12 +46,12 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => setState(() => _map.addEntries([MapEntry('Checkbox #${++_count}', false)])),
+        onPressed: () => setState(() => _map.addEntries([MapEntry(++_count, ["false", "text $_count"])])),
       ),
       body: SingleChildScrollView(child: Column(children: checkRow)),
 
     );
-  }  
+  }
 }
 
 class CheckField extends StatefulWidget {
