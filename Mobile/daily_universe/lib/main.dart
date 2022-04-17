@@ -1,3 +1,8 @@
+// ignore_for_file: must_be_immutable
+// ignore: prefer_final_fields
+// ignore: no_logic_in_create_state
+// ignore: prefer_final_fields
+
 import 'package:flutter/material.dart';
 
 
@@ -64,71 +69,76 @@ class _HomeState extends State<Home> {
 }
 
 class CheckField extends StatefulWidget {
-  int id;
-  Map<int, List<String>> _map = {};
+  final int id;
+  
+  Map<int, List<String>> _map;
   CheckField(this.id, this._map, {Key? key}) : super(key: key);
 
   @override
-  // ignore: no_logic_in_create_state
+  
   State<CheckField> createState() => _CheckFieldState(id, _map);
 }
 
 class _CheckFieldState extends State<CheckField> {
   int id;
-  Map<int, List<String>> _map = {};
+  
+  Map<int, List<String>> _map;
   _CheckFieldState(this.id, this._map,);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          bool newValue = !(_map[id]![0] == "true");
-          _map[id]![0] = newValue.toString();
-          print("Container number $id was tapped");
-        });
-      },
-      child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: MediaQuery.of(context).size.width - 20,
-              height: 80,
-              // decoration: BoxDecoration(
-              // color: Colors.green,
-              //   borderRadius: const BorderRadius.only(
-              //       topLeft: Radius.circular(10),
-              //         topRight: Radius.circular(10),
-              //         bottomLeft: Radius.circular(10),
-              //         bottomRight: Radius.circular(10)
-              //     ),
-              //   boxShadow: [
-              //     BoxShadow(
-              //       color: Colors.grey.withOpacity(0.5),
-              //       spreadRadius: 5,
-              //       blurRadius: 7,
-              //       offset: const Offset(1, 3),
-              //     ),
-              //   ],
-              // ),
-              child: Row(
-                children: [
-                  Checkbox(value: _map[id]![0] == "true", onChanged: (value) => setState(() {
-                    // onChanged: (value) => setState(() => _map[key] = value!),
-                    _map[id]![0] = value!.toString();
-                    print(id);
-                    print(_map[id]![1]);
-                    print(value);
-                  })),
-                  SizedBox(
-                    child: Text(_map[id]![1].toString()),
-                    width: 100,
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: Text(_map[id]![0].toString())
-                  )
-                ],
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      width: MediaQuery.of(context).size.width - 20,
+      height: 80,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(1, 3),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              bool newValue = !(_map[id]![0] == "true");
+              _map[id]![0] = newValue.toString();
+              print("Container number $id was tapped");
+            });
+          },
+          child: Row(
+            children: [
+              Checkbox(value: _map[id]![0] == "true", onChanged: (value) => setState(() {
+                // onChanged: (value) => setState(() => _map[key] = value!),
+                _map[id]![0] = value!.toString();
+                print(id);
+                print(_map[id]![1]);
+                print(value);
+              })),
+              SizedBox(
+                child: Text(_map[id]![1].toString()),
+                width: 100,
               ),
-            )
+              SizedBox(
+                width: 100,
+                child: Text(_map[id]![0].toString())
+              )
+            ],
+          )
+        )
+      )
     );
   }
 }
