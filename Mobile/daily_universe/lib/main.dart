@@ -30,58 +30,19 @@ class MyApp extends StatelessWidget {
 class Home extends StatefulWidget{
   const Home({Key? key}) : super(key: key);
 
-
-  
   @override
   State<Home> createState() => _HomeState();
 }
 
+
 class _HomeState extends State<Home> {
   final Map<String, bool> _map = {};
   int _count = 0;
-
   List<Widget> checkRow = [];
   
   @override
   Widget build(BuildContext context) {
-    checkRow = [
-      Container(
-        child: Row(children: [
-            Expanded(
-              child: Column(children: [
-                Container(
-                  child: Checkbox(
-                    value: false,
-                    onChanged: (bool? value)=> setState(() => {})
-                  ),
-                  color: Colors.blue,
-                  padding: const EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 3),
-                ), 
-              ]),
-              flex: 1,
-            ),
-            Expanded(
-              child: Column(children: const [
-                    Text('Checkbox1', textAlign: TextAlign.start),
-              ]),
-              flex: 15,
-            ),
-            Expanded(
-              child: Column(children: [
-                Container(child: IconButton(
-                  icon: const Icon(Icons.highlight_remove),
-                  onPressed: () {  },),
-                  color: Colors.red,
-                  margin: const EdgeInsets.only(top:5, bottom: 5),
-                ),
-              ]),
-              flex: 1,
-            )
-          ],),
-          color: Colors.grey,
-          margin: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
-        )
-      ];
+    checkRow = [const CheckField()];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -91,4 +52,51 @@ class _HomeState extends State<Home> {
 
     );
   }  
+}
+
+class CheckField extends StatefulWidget {
+  const CheckField({Key? key}) : super(key: key);
+
+  @override
+  State<CheckField> createState() => _CheckFieldState();
+}
+
+class _CheckFieldState extends State<CheckField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, top: 10),
+      width: MediaQuery.of(context).size.width - 20,
+      height: 80,
+      decoration: BoxDecoration(
+      color: Colors.green,
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)
+          ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: const [
+          SizedBox(
+            child: Text("Hi"),
+            width: 100,
+          ),
+          SizedBox(
+            width: 100,
+            child: Text("Huy")
+          )
+        ],
+      ),
+    );
+  }
 }
