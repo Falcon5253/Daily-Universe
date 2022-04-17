@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Переменная хранящая в себе все элементы класса CheckField
 Map<int, List<String>> checkboxesList = {};
+List<CheckField> THE_ARRAY = [];
 // Переменная передается в другой виджет любым способом, например:
 //   children: checkboxesList.keys.map( (key) => CheckField(key, checkboxesList)).toList()
 
@@ -10,19 +11,21 @@ Map<int, List<String>> checkboxesList = {};
 int uniqueCheckfieldIdTransfer = 0;
 
 class CheckField extends StatefulWidget {
-  final int id;
+  int id;
   CheckField(this.id, {Key? key}) : super(key: key) {
     uniqueCheckfieldIdTransfer = id;
   }
-
+  int gid (){
+    return id;
+  }
   @override
   State<CheckField> createState() => _CheckFieldState();
 }
 
 class _CheckFieldState extends State<CheckField> {
-  final int id = uniqueCheckfieldIdTransfer;
+  int id = uniqueCheckfieldIdTransfer;
   _CheckFieldState();
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,7 +81,14 @@ class _CheckFieldState extends State<CheckField> {
                 child:  InkWell(
                   onTap: () {
                     setState(() {
-                      checkboxesList.remove(id);
+                      setState(() {
+                        THE_ARRAY.removeWhere(
+                        (item) {
+                          return item.gid() == id;
+                        }
+                      );
+                      print(THE_ARRAY);
+                      });
                     });
                   },
                   child: const Icon(

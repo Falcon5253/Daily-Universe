@@ -11,7 +11,7 @@ bool isChecked = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -35,20 +35,24 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home> {
   int counter = 0;
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => setState(() => checkboxesList.addEntries([MapEntry(++counter, ["false", "text $counter"])])),
+        onPressed: () => setState(() { 
+          checkboxesList.addEntries([MapEntry(++counter, ["false", "text $counter"])]);
+          THE_ARRAY.add(CheckField(counter));
+          print(THE_ARRAY);
+        }),
       ),
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              children: checkboxesList.keys.map( (key) => CheckField(key)).toList()
+              children: THE_ARRAY
             )
           )
         ]
