@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Переменная хранящая в себе все элементы класса CheckField
-<<<<<<< HEAD
-Map<int, List<String>> checkboxesList = {};
-List<CheckField> THE_ARRAY = [];
-=======
 Map<int, CheckField> checkboxesList = {};
->>>>>>> newMappingforChecks
 // Переменная передается в другой виджет любым способом, например:
 //   children: checkboxesList.keys.map( (key) => CheckField(key, checkboxesList)).toList()
 
@@ -17,32 +12,19 @@ bool uniqueCheckFieldValueTransfer = false;
 
 
 class CheckField extends StatefulWidget {
-<<<<<<< HEAD
-  int id;
-  CheckField(this.id, {Key? key}) : super(key: key) {
-    uniqueCheckfieldIdTransfer = id;
-=======
   int checkId;
   bool checkValue;
   CheckField(this.checkId, this.checkValue, {Key? key}) : super(key: key) {
     uniqueCheckFieldIdTransfer = checkId;
     uniqueCheckFieldValueTransfer = checkValue;
->>>>>>> newMappingforChecks
-  }
-  int gid (){
-    return id;
   }
   @override
   State<CheckField> createState() => _CheckFieldState();
 }
 
 class _CheckFieldState extends State<CheckField> {
-<<<<<<< HEAD
-  int id = uniqueCheckfieldIdTransfer;
-=======
   int checkId = uniqueCheckFieldIdTransfer;
   bool checkValue = uniqueCheckFieldValueTransfer;
->>>>>>> newMappingforChecks
   _CheckFieldState();
   
   @override
@@ -99,18 +81,7 @@ class _CheckFieldState extends State<CheckField> {
                 child:  InkWell(
                   onTap: () {
                     setState(() {
-<<<<<<< HEAD
-                      setState(() {
-                        THE_ARRAY.removeWhere(
-                        (item) {
-                          return item.gid() == id;
-                        }
-                      );
-                      print(THE_ARRAY);
-                      });
-=======
                       checkboxesList.remove(checkId);
->>>>>>> newMappingforChecks
                     });
                   },
                   child: const Icon(
