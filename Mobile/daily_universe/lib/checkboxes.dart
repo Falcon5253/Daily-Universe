@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // Переменная хранящая в себе все элементы класса CheckField
 Map<int, CheckField> checkboxesList = {};
 // Переменная передается в другой виджет любым способом, например:
-//   children: checkboxesList.keys.map( (key) => CheckField(key, checkboxesList)).toList()
 
 
 
@@ -12,8 +11,8 @@ bool uniqueCheckFieldValueTransfer = false;
 
 
 class CheckField extends StatefulWidget {
-  int checkId;
-  bool checkValue;
+  final int checkId;
+  final bool checkValue;
   CheckField(this.checkId, this.checkValue, {Key? key}) : super(key: key) {
     uniqueCheckFieldIdTransfer = checkId;
     uniqueCheckFieldValueTransfer = checkValue;
@@ -26,11 +25,12 @@ class CheckField extends StatefulWidget {
 class _CheckFieldState extends State<CheckField> {
   int checkId = uniqueCheckFieldIdTransfer;
   bool checkValue = uniqueCheckFieldValueTransfer;
+  bool isDeleted = false;
   _CheckFieldState();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return isDeleted ? const SizedBox.shrink() : Container(
       margin: const EdgeInsets.only(top: 10),
       width: MediaQuery.of(context).size.width - 20,
       height: 80,
@@ -82,7 +82,7 @@ class _CheckFieldState extends State<CheckField> {
                 child:  InkWell(
                   onTap: () {
                     setState(() {
-                      checkboxesList.remove(checkId);
+                      isDeleted = true;
                     });
                   },
                   child: const Icon(
@@ -100,20 +100,16 @@ class _CheckFieldState extends State<CheckField> {
 }
 
 
+// Для добавления новых обьектов CheckField используйте следующую функцию
+void addCheckbox(int id, bool value) { 
+  checkboxesList.addEntries([MapEntry(id, CheckField(id, value))]);
+}
+// Пример:  addCheckbox(0, false)
 
-// Для отрисовки всех объектов класса CheckField из checkboxesList можно использовать
-// Widget CustomScrollView, например так:
-//    CustomScrollView(
-//      slivers: [
-//        SliverFillRemaining(
-//          hasScrollBody: false,
-//          child: Column(
-//           children: checkboxesList.keys.map( (key) => CheckField(key, checkboxesList)).toList()
-//          )
-//        )
-//      ]
-//    )
-//
-// void addCheckbox { 
-//   checkboxesList.addEntries([MapEntry(++_count, ["false", "text $_count"])]);
-// }
+
+
+// Для отрисовки всех чекбоксов можно использовать колонки
+// можете передать их туда в виде массива следующим образом:
+//  Column (
+//    children: checkboxesList.values.toList()
+//  )
