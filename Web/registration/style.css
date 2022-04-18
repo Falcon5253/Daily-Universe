@@ -1,0 +1,107 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
+a {
+text-decoration: none;
+font-family: arial;
+}
+
+li {
+list-style-type: none;
+font-family: arial;
+}
+
+p, span, h2 {
+font-family: arial;
+}
+
+/* header */
+
+.header__wrapper {
+    max-width: 1440px;
+    padding-top: 50px;
+    margin: 0 auto;
+}
+
+.header__text {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 45px;
+    padding: 40px;
+    border-radius: 100px;
+    width: 500px;
+    border: 5px black solid; 
+}   
+
+/* main */
+
+.main__img-plus {
+    width: 2%;
+    display: block;
+    position: absolute;
+    margin-top: 2%;
+    margin-left: 55%;
+    margin-right: auto;
+}
+
+.main__img-avatar {
+    width: 8%;
+    display: block;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* footer */
+
+.footer__wrapper {
+    display: grid;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.footer__text {
+    max-width: 1440px;
+    margin: 0 auto;
+    color: black;
+    background-color: #C4C4C4;
+    font-size: 40px;
+    border-radius: 40px;
+    padding: 10px 25px 10px 25px;
+    margin-bottom: 25px;
+}
+
+.footer__text-bottom {
+    border: 5px black solid;
+    background-color: #C4C4C4;
+    font-size: 30px;
+    padding: 10px 40px 10px 40px;
+}
+
+.footer__extra {
+    margin-left: 18%;
+}
+
+.footer__text-extra {
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #C4C4C4;
+    font-size: 40px;
+    border-radius: 80px;
+    padding: 10px 25px 10px 23px;
+    margin-bottom: 25px;
+    margin: 20px;
+    margin-bottom: 55px;
+}
+
+.footer__text-date {
+    width: 37%;
+}
+
+.footer__text-sex {
+    width: 31%;
+}
