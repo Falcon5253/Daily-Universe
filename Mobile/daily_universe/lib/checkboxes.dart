@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
 // Переменная хранящая в себе все элементы класса CheckField
-Map<int, List<String>> checkboxesList = {};
+Map<int, CheckField> checkboxesList = {};
 // Переменная передается в другой виджет любым способом, например:
 //   children: checkboxesList.keys.map( (key) => CheckField(key, checkboxesList)).toList()
 
 
 
-int uniqueCheckfieldIdTransfer = 0;
+int uniqueCheckFieldIdTransfer = 0;
+bool uniqueCheckFieldValueTransfer = false;
+
 
 class CheckField extends StatefulWidget {
-  final int id;
-  CheckField(this.id, {Key? key}) : super(key: key) {
-    uniqueCheckfieldIdTransfer = id;
+  int checkId;
+  bool checkValue;
+  CheckField(this.checkId, this.checkValue, {Key? key}) : super(key: key) {
+    uniqueCheckFieldIdTransfer = checkId;
+    uniqueCheckFieldValueTransfer = checkValue;
   }
 
   @override
@@ -20,7 +24,8 @@ class CheckField extends StatefulWidget {
 }
 
 class _CheckFieldState extends State<CheckField> {
-  final int id = uniqueCheckfieldIdTransfer;
+  int checkId = uniqueCheckFieldIdTransfer;
+  bool checkValue = uniqueCheckFieldValueTransfer;
   _CheckFieldState();
 
   @override
@@ -51,17 +56,16 @@ class _CheckFieldState extends State<CheckField> {
         child: InkWell(
           onTap: () {
             setState(() {
-              bool newValue = !(checkboxesList[id]![0] == "true");
-              checkboxesList[id]![0] = newValue.toString();
+              checkValue = !checkValue;
             });
           },
           child: Row(
             children: [
-              Checkbox(value: checkboxesList[id]![0] == "true", onChanged: (value) => setState(() {
-                checkboxesList[id]![0] = value!.toString();
+              Checkbox(value: checkValue, onChanged: (value) => setState(() {
+                checkValue = value!;
               })),
               SizedBox(
-                child: Text(checkboxesList[id]![1].toString()),
+                child: Text("Checkbox number $checkId"),
                 width: MediaQuery.of(context).size.width - 148,
               ),
               Container(
@@ -78,7 +82,7 @@ class _CheckFieldState extends State<CheckField> {
                 child:  InkWell(
                   onTap: () {
                     setState(() {
-                      checkboxesList.remove(id);
+                      checkboxesList.remove(checkId);
                     });
                   },
                   child: const Icon(

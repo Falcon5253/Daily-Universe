@@ -41,14 +41,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => setState(() => checkboxesList.addEntries([MapEntry(++counter, ["false", "text $counter"])])),
+        onPressed: () => setState(() => checkboxesList.addEntries([MapEntry(++counter, CheckField(counter, false))])),
       ),
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              children: checkboxesList.keys.map( (key) => CheckField(key)).toList()
+              children: checkboxesList.values.toList()
             )
           )
         ]
