@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-import 'package:flutter/cupertino.dart';
+import 'package:daily_universe/users.dart';
 import 'package:flutter/material.dart';
 import 'defines.dart' as d;
 import 'package:crypto/crypto.dart';
@@ -19,6 +19,7 @@ class _RegistrationState extends State<Registration> {
   final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
   String gender = 'Пол';
+  String _name=''; int _age=0; int _gender=0; String _mail=''; String _passHash='';
   Widget build(BuildContext context) {
     void hideKeyboard() {
       FocusScope.of(context).unfocus();
@@ -31,11 +32,11 @@ class _RegistrationState extends State<Registration> {
       final form = formKey.currentState;
       if(form!=null) {
         if (form.validate()) {
-          d.dailyUser.gender = gender == 'М'? 1:gender == 'Ж'?2:0;
-          d.dailyUser.updateDataBaseValue('gender', d.dailyUser.gender);
-          d.dailyUser.autoLogin=0;
-          d.dailyUser.updateDataBaseValue('autoLogin', d.dailyUser.autoLogin);
+          _gender = gender == 'М'? 1:gender == 'Ж'?2:0;
+         d.AutoLogin=0;
           form.save();
+          d.dailyUser = User.reg(_name, _age, _gender, _mail, _passHash);
+          d.dailyUser.updateConfigValue(d.localConfigs[0], 0,);
           performLogin();
         }
       }
@@ -55,8 +56,9 @@ class _RegistrationState extends State<Registration> {
                  Container(
                   child:  TextFormField( //mail
                     onSaved: (val) {
-                      d.dailyUser.mail = val;
-                      d.dailyUser.updateDataBaseValue('mail', d.dailyUser.mail);
+                      _mail = val!;
+                      //d.dailyUser.mail = val;
+                      //d.dailyUser.updateDataBaseValue('mail', d.dailyUser.mail);
                       },
                     validator: (val) {
                       if(val!=null && val!='') {
@@ -78,8 +80,8 @@ class _RegistrationState extends State<Registration> {
                   child: TextFormField( //pass
                     onSaved: (val) {
                       if(val!=null) {
-                        d.dailyUser.passHash = sha512.convert(utf8.encode(val)).toString();
-                        d.dailyUser.updateDataBaseValue('passHash', d.dailyUser.passHash);
+                        _passHash = sha512.convert(utf8.encode(val)).toString();
+                        //d.dailyUser.updateDataBaseValue('passHash', d.dailyUser.passHash);
                       }
                       },
                     validator: (val) {
@@ -99,8 +101,8 @@ class _RegistrationState extends State<Registration> {
                   child: TextFormField( //name
                     onSaved: (val) {
                       if(val!=null) {
-                        d.dailyUser.name = val;
-                        d.dailyUser.updateDataBaseValue('name', d.dailyUser.name);
+                        _name = val;
+                        //d.dailyUser.updateDataBaseValue('name', d.dailyUser.name);
                       }
                     },
                     validator: (val) {
@@ -124,9 +126,9 @@ class _RegistrationState extends State<Registration> {
                      child:  TextFormField(//age
                          onSaved: (val) {
                            if(val!=null) {
-                             d.dailyUser.age = int.parse(val);
-                             d.dailyUser.updateDataBaseValue(
-                                 'age', d.dailyUser.age);
+                             _age = int.parse(val);
+                            // d.dailyUser.updateDataBaseValue(
+                                // 'age', d.dailyUser.age);
                            }
               },
                    validator: (val) {

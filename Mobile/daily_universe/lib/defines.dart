@@ -6,10 +6,13 @@ import 'dart:ffi';
 late dynamic dailyUser; // указатель на объект пользователя. По идее инициализируется при старте программы, затем присваивается сюда и используется отсюда
 
 // имена переменных класса пользователя, используются для работы с базой sql, т.к. объекты по имени во flutter не вызвать. Необходимо дублировать в файле user.dart
-const List userParams = ['userId','name', 'age', 'city','gender','mail','passHash','autoLogin'];
+const List userParams = ['userId','name', 'age', 'city','gender','mail','passHash'];
 const List sqlDataTypes = ['INTEGER', 'TEXT', 'REAL']; // типы данных для sql, количество фиксированное, повторы не нужны
 const List typesGender = ['Не указан', 'Мужской', 'Женский'];
 const String dbName = 'my_db.db';
+int lastUserId = 0;
+int AutoLogin = 0;
+const List localConfigs = ['userId','autoLogin'];
 bool firstClassInit = true;
 late int deviceRealWidth; //Ширина в пикселях текущего уст-ва
 late int deviceRealHeight; //Высота в пикселях текущего уст-ва

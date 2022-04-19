@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-import 'package:flutter/cupertino.dart';
+import 'package:daily_universe/users.dart';
 import 'package:flutter/material.dart';
 import 'defines.dart' as d;
 import 'package:crypto/crypto.dart';
+import 'package:sqflite/sqflite.dart';
 import 'dart:convert' show utf8;
 
 class Login extends StatefulWidget {
@@ -18,8 +19,9 @@ class _LoginState extends State<Login> {
   @override
   final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
-  String gender = 'М';
   bool isChecked = false;
+  String currentMail = '';
+  int currentId = 0;
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -32,6 +34,18 @@ class _LoginState extends State<Login> {
       }
       return Colors.green;
     }
+    void checkMail(val) async
+    {
+      final userDb = await openDatabase(d.dbName);
+      var data = await userDb.rawQuery('SELECT mail from users');
+      for (Map temp in data)
+      {
+        String _mail = temp.values.elementAt(0);
+        if (_mail.compareTo(val)==0)
+        {currentMail = val; return;}
+      }
+      currentMail = '-1';
+    }
     void hideKeyboard() {
       FocusScope.of(context).unfocus();
     }
@@ -39,14 +53,53 @@ class _LoginState extends State<Login> {
       hideKeyboard();
       Navigator.pushReplacementNamed(context, '/main');
     }
-    void submit() {
+    void resultLogin() async
+    {
+      d.dailyUser = null;
+      d.dailyUser = User(currentId);
+      while(d.dailyUser.name=='')
+        {
+          await Future.delayed(Duration(milliseconds: 10));
+        }
+      d.AutoLogin = isChecked?currentId:0;
+      d.dailyUser.updateConfigValue(d.localConfigs[1], d.AutoLogin);
+      performLogin();
+    }
+    void checkPass(val) async{
+      String _passHash = sha512.convert(utf8.encode(val)).toString();
+      while(currentMail.compareTo('')==0 && currentMail.compareTo('-1')!=0)
+        {
+          await Future.delayed(Duration(milliseconds: 10));
+        }
+      final userDb = await openDatabase(d.dbName);
+      var data = await userDb.rawQuery('SELECT passHash, userId from users WHERE mail = \'$currentMail\'');
+      for (Map temp in data)
+      {
+        String _pass = temp.values.elementAt(0);
+        if (_pass.compareTo(_passHash)==0)
+        {currentId = temp.values.elementAt(1); resultLogin();return;}
+      }
+     // currentId = -1;
+    }
+    void submit() async{
       final form = formKey.currentState;
       if(form!=null) {
         if (form.validate()) {
-          d.dailyUser.autoLogin = isChecked? 1:0;
-          d.dailyUser.updateDataBaseValue('autoLogin', d.dailyUser.autoLogin);
-          form.save();
-          performLogin();
+          //while(currentMail.compareTo('')==0 && currentMail.compareTo('-1')!=0 && currentId==0)
+         // {
+         //   await Future.delayed(Duration(milliseconds: 10));
+         // }
+          //if(currentId!=-1&&currentMail.compareTo('-1')!=0) {
+        //    d.dailyUser = User(currentId);
+           // print(currentId);
+           // while(d.dailyUser == null && d.dailyUser.name == '')
+         //     {
+          //      await Future.delayed(Duration(milliseconds: 10));
+         //     }
+        //    d.AutoLogin = currentId;
+        //    form.save();
+         //   performLogin();
+         // }
         }
       }
     }
@@ -68,11 +121,11 @@ class _LoginState extends State<Login> {
                         },
                         validator: (val) {
                           if(val!=null && val!='') {
-                            if(val==d.dailyUser.mail)
-                              {
-                                return null;
-                              }
-                            else {return 'Такой почты нет';}
+                           checkMail(val);
+                             // res.then((value) {
+                               // return value ? null : 'Такой почты нет';
+                             // });
+                            return null;
                           }
                           return 'Empty email field';
                         },
@@ -94,11 +147,13 @@ class _LoginState extends State<Login> {
                         },
                         validator: (val) {
                           if(val!=null && val!='') {
-                            if(sha512.convert(utf8.encode(val)).toString()==d.dailyUser.passHash)
-                            {
-                              return null;
-                            }
-                            else {return 'Пароли не совпадают';}
+                            checkPass(val);
+                            return null;
+                            //if(true)//sha512.convert(utf8.encode(val)).toString()==d.dailyUser.passHash)
+                           // {
+                           //   return null;
+                           // }
+                           // else {return 'Пароли не совпадают';}
                           }
                           return 'Empty password field';
                         },

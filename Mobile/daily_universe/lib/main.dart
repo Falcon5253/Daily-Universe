@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'users.dart';
 import 'defines.dart' as d;
 import 'register.dart';
@@ -12,10 +13,30 @@ primaryColor менять на colorScheme: ColorScheme.light().copyWith( primar
  */
 
 
-void userClassInit() {
-  if (d.firstClassInit) {
-    d.dailyUser = User();
-    d.firstClassInit = false;
+//void userClassInit() {
+ // if (d.firstClassInit) {
+ //   d.dailyUser = User();
+    //d.firstClassInit = false;
+ // }
+//}
+
+void checkAutoLogin() async{
+  final userDb = await openDatabase(d.dbName);
+  await userDb.execute('CREATE TABLE IF NOT EXISTS config(userId INTEGER PRIMARY KEY, ${d.localConfigs[1]} INTEGER)');
+  final List temp = await userDb.rawQuery('SELECT * from config WHERE userId = 1');
+  if(temp.isNotEmpty){
+  Map data = temp[0];
+  d.AutoLogin = data.values.elementAt(1)>0? 1:0;}
+  //print(d.isAutoLogin);
+  getLastUserId(userDb);
+}
+
+void getLastUserId(Database userDb)async{
+  await userDb.execute('CREATE TABLE IF NOT EXISTS users(userId INTEGER PRIMARY KEY)');
+  final List temp = await userDb.rawQuery('SELECT userId from users');
+  if(temp.isNotEmpty){
+    Map data =  await temp.last;
+    d.lastUserId =  await data.values.elementAt(0);
   }
 }
 
@@ -47,8 +68,11 @@ class MainScreen extends StatelessWidget {
       d.deviceVirtualWidth = MediaQuery.of(context).size.width.round();
       d.deviceRealHeight = (MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio).round();
       d.deviceRealWidth = (MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio).round();
+      checkAutoLogin();
+      //userClassInit();
+      d.firstClassInit = false;
       }
-    userClassInit();
+
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -67,8 +91,15 @@ class MainScreen extends StatelessWidget {
             SizedBox(
               width: d.deviceRealWidth/4,
               height: d.deviceRealHeight/30,
-              child: ElevatedButton(onPressed: () {
-              Navigator.pushNamed(context, d.dailyUser.autoLogin==1?'/main':'/log');
+              child: ElevatedButton(onPressed: () async{
+                if(d.AutoLogin>0){
+                  d.dailyUser = User(d.AutoLogin);
+                  while(d.dailyUser.name=='')
+                  {
+                    await Future.delayed(Duration(milliseconds: 10));
+                  }
+                }
+              Navigator.pushNamed(context, d.AutoLogin>0?'/main':'/log');
             }, child: Text('Войти в аккаунт', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
             Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/128)),

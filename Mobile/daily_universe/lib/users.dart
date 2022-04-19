@@ -47,14 +47,14 @@ class User {
    */
 
   //сюда добавлять переменные. Поддерживаются только int, double и String.
-  int userId = 1; // на данный момент константа, при желании можно переделать
+  int userId = 0;
   String name = '';
-  int age = 20;
+  int age = 0;
   String city = '';
   int gender = 0; //0-не указан, 1-м, 2-ж
   String mail = '';
   String passHash = '';
-  int autoLogin = 0; //1-да
+  //int autoLogin = 0; //1-да
   //...................................................................
 
 
@@ -62,27 +62,48 @@ class User {
   final userDb = openDatabase(d.dbName); // переменная статичная и не сохраняется в базе данных
   //......................................................................
 
-  User() //инициализация пользователя
+  User(int _id) //инициализация пользователя
   {
-    userDb.then((db) => parseUserData(db));
+    userId = _id;
+    userDb.then((db) {
+      parseUserData(db);
+      //addLocalConfig(db);
+    });
   }
-  parseUserData(Database db)
+
+  User.reg(String _name, int _age, int _gender, String _mail, String _passHash)
   {
-    List classParams = [userId,name,age,city,gender,mail,passHash,autoLogin];
+    userId = d.lastUserId +1; d.lastUserId ++;
+    name = _name;
+    age = _age;
+    gender = _gender;
+    mail = _mail;
+    passHash = _passHash;
+    userDb.then((db)=>parseUserData(db));
+  }
+
+ // addLocalConfig(Database db) //пока что почти пустой
+ // {
+ // }
+  parseUserData(Database db) async
+  {
+    List classParams = [userId,name,age,city,gender,mail,passHash];
     if(classParams.length!=d.userParams.length) { print('classParams.length!=d.userParams.length');exit(1);}
     String result = 'CREATE TABLE IF NOT EXISTS users(userId INTEGER PRIMARY KEY,';
     for(var i = 1; i<d.userParams.length;i++) { //в этом цикле создаётся файл сохранения и обновляются колонки
       String curParamName = d.userParams[i];
       dynamic curObjectParam = classParams[i];
       String sqlCurrentType = getSqlType(curObjectParam);
-      result += ' ' + curParamName + ' ' + sqlCurrentType + ',';
+      result += ' $curParamName $sqlCurrentType,';
     }
     result = result.substring(0, result.length-1);
     result += ')';
-    db.execute(result);
-    db.execute('insert or ignore into users(userId) values (1)');
-      final temp = db.rawQuery('SELECT * from users WHERE userId = 1');
-      temp.then((data) => parseUserDataCont(classParams, data));
+    await db.execute(result);
+    var temp = db.execute('insert or ignore into users(userId) values ($userId)');
+    List<Map<String, Object?>> data;
+    temp.then((d) async => {
+    data = await db.rawQuery('SELECT * from users WHERE userId = $userId'),
+    parseUserDataCont(classParams, data)});
   }
   String getSqlType(param)
   {
@@ -98,7 +119,13 @@ class User {
         exit(1);
     }
   }
-  void parseUserDataCont(List classParams, List data)
+  void afterFixColumn(List classParams) async
+  {
+    Database db = await userDb;
+    var _data = await db.rawQuery('SELECT * from users WHERE userId = $userId');
+    parseUserDataCont(classParams, _data);
+  }
+  void parseUserDataCont(List classParams, List data) async
   {
     Map userD = {};
     if(data.isNotEmpty) {userD = data[0];}
@@ -106,7 +133,11 @@ class User {
     if(userD.length != classParams.length) //|| data.isEmpty)
     {
       int offset = (classParams.length - userD.length);
-      fixColumn(offset, classParams);
+      final fixResult = fixColumn(offset, classParams);
+      fixResult.whenComplete(() => {
+        afterFixColumn(classParams)
+      });
+      return;
     }
     for(int i = 0; i<userD.length;i++)
       {
@@ -117,11 +148,11 @@ class User {
         }
         if (classParams[i] != param && classParams[i]!=Null && classParams[i].runtimeType!=String) {
         //String updateSqlParamStr = 'UPDATE users SET ' + d.userParams[i].toString() + ' = ' + classParams[i].toString() + ' WHERE userId = 1';
-          String updateSqlParamStr = 'UPDATE users SET ${d.userParams[i].toString()} = ${classParams[i].toString()} WHERE userId = 1';
+          String updateSqlParamStr = 'UPDATE users SET ${d.userParams[i].toString()} = ${classParams[i].toString()} WHERE userId = $userId';
         userDb.then((db) => db.execute(updateSqlParamStr));
         }
         if (classParams[i] != param && classParams[i]!=Null && classParams[i].runtimeType==String) {
-          String updateSqlParamStr = 'UPDATE users SET ${d.userParams[i].toString()} = \'${classParams[i].toString()}\'';
+          String updateSqlParamStr = 'UPDATE users SET ${d.userParams[i].toString()} = \'${classParams[i].toString()}\' WHERE userId = $userId';
           userDb.then((db) => db.execute(updateSqlParamStr));
         }
       }
@@ -133,25 +164,31 @@ class User {
     gender = classParams[variable++];
     mail = classParams[variable++];
     passHash = classParams[variable++];
-    autoLogin = classParams[variable++];
     //....................................................
   }
-  void updateDataBaseValue(String name, param)
+  void updateDataBaseValue(String name, param, [String? table])
   {
+    table = table ?? 'users';
     if(param.runtimeType!=String) {
-      //String result = "UPDATE users SET " + name + ' = ' + param.toString();
-      String result = "UPDATE users SET $name = ${param.toString()}";
+      String result = "UPDATE $table SET $name = ${param.toString()} WHERE userId = $userId";
       userDb.then((db) => db.execute(result));
     }
     else
-      {updateDataBaseString(name, param);}
+      {updateDataBaseString(name, param, table);}
   }
-  void updateDataBaseString(String name, param)
+  void updateDataBaseString(String name, param, [String? table])
   {
-    String result = "UPDATE users SET $name = \'${param.toString()}\'";
+    table = table ?? 'users';
+    String result = "UPDATE $table SET $name = \'${param.toString()}\' WHERE userId = $userId";
     userDb.then((db) => db.execute(result));
   }
-  Future<void> fixColumn(int offset, classParams) async
+  void updateConfigValue(name, param) async
+  {
+    Database db = await userDb;
+    await db.execute('insert or ignore into config(userId) values (1)');
+    await db.execute('UPDATE config SET $name = \'${param.toString()}\' WHERE userID = 1');
+  }
+  Future<int> fixColumn(int offset, classParams) async
   {
     Database db = await userDb;
     int userDataLen = d.userParams.length;
@@ -172,7 +209,7 @@ class User {
             await db.execute('ALTER TABLE users ADD COLUMN $curParamName $sqlCurrentType');
           }
         }
-    return;
+    return 1;
   }
   void rebuildDataBase()
   {
