@@ -6,6 +6,7 @@ import 'defines.dart' as d;
 import 'register.dart';
 import 'login.dart';
 import 'crossroads.dart';
+import 'calendar.dart';
 
 /*
 stless быстрое создание класса с виджетом; initstate быстрое создание функции
@@ -45,12 +46,13 @@ void main() {
     theme: ThemeData(
       colorScheme: d.defaultTopColor,
     ),
-    initialRoute: '/',
+    initialRoute: '/cal', //'/', //Временная замена исключительно для демонстрации
     routes: {
       '/': (context) => MainScreen(),
       '/log': (context) => Login(),
       '/reg': (context) => Registration(),
       '/main': (context) => Crossroads(),
+      '/cal': (context) => Calendar(), // После слияний обязательно изменить путь на /main/cal
     },
   ));
 
