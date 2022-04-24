@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:daily_universe/crossroads.dart';
 import 'package:flutter/material.dart';
 import 'users.dart';
 import 'defines.dart' as d;
 import 'register.dart';
 import 'login.dart';
-import 'crossroads.dart';
+import 'main_menu.dart';
+// import 'crossroads.dart';
 
 /*
 stless быстрое создание класса с виджетом; initstate быстрое создание функции
@@ -26,7 +28,7 @@ void main() {
     ),
     initialRoute: '/',
     routes: {
-      '/': (context) => MainScreen(),
+      '/': (context) => MainMenu(), // Для быстрой отладки сделал переход сразу на Главное окно
       '/log': (context) => Login(),
       '/reg': (context) => Registration(),
       '/main': (context) => Crossroads(),

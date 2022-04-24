@@ -1,7 +1,7 @@
 // файл проекта с глобальными переменными и константами, распространённая практика на C++
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:ffi';
+// import 'dart:ffi';
 
 late dynamic dailyUser; // указатель на объект пользователя. По идее инициализируется при старте программы, затем присваивается сюда и используется отсюда
 
