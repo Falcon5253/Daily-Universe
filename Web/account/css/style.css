@@ -1,0 +1,242 @@
+:root {
+    --background-color: white;
+    --text-color: #16171B;
+    --svg-color: #16171B;
+    --button-color: #C4C4C4;
+    --button-active-color: #A7A7A7;
+    --invert-svg-color: 0;
+}
+
+body[data-theme="dark"] {
+    --background-color: #202125;
+    --text-color: white;
+    --svg-color: white;
+    --button-color: #16171B;
+    --button-active-color: #101115;
+    --invert-svg-color: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--background-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.8em;
+    margin: 0;
+    color: var(--text-color);
+}
+
+main {
+    margin-bottom: 10px;
+}
+
+/* back button */
+
+.back-button {
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+}
+
+.back-button__icon {
+    width: 50px;
+    height: 50px;
+    margin: 20px;
+    float: right;
+}
+
+.back-button__icon path {
+    stroke: var(--svg-color);
+}
+
+/* header */
+
+.avatar img {
+    position: relative;
+}
+
+.add-icon svg path {
+    stroke: var(--svg-color);
+}
+
+.avatar__icon {
+    display: block;
+    height: 280px;
+    width: 280px;
+    margin: 0 auto;
+    padding: 40px;
+    filter: invert(var(--invert-svg-color));
+}
+
+.avatar__plus {
+    width: 20px;
+    height: 19px;
+    left: 400px;
+    bottom: 50px;
+}
+
+.avatar__plus {
+    filter: invert(var(--invert-svg-color));
+}
+
+/* personal information */
+
+.personal-information {
+    padding-top: 50px;
+}
+
+/* input blocks */
+
+input {
+    color: var(--text-color);
+}
+
+.input-blocks {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-input-blocks {
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-input-blocks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.input-block {
+    margin-top: 25px;
+    text-align: center;
+    border-radius: 50px;
+    border: 2px solid var(--button-active-color);
+    background-color: var(--button-color);
+    font-weight: 700;
+    padding: 10px 25px 10px 23px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input-block:focus {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    border-color: var(--button-active-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
+
+.input-icon-block {
+    position: relative;
+}
+
+.input-icon-block input {
+    width: 100%;
+    padding-right: 2.5rem;
+}
+
+.add-icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 38px;
+    bottom: 0;
+    right: 0.875rem;
+    height: 1rem;
+    width: 1rem;
+}
+
+.bottom-input-blocks .input-icon-block .input-sex {
+    width: 170px;
+}
+
+.bottom-input-blocks .input-icon-block .input-date {
+    color: var(--text-color);
+}
+
+.bottom-input-blocks .input-icon-block .input-date::-webkit-calendar-picker-indicator {
+    filter: invert(var(--invert-svg-color));
+}
+
+@media (max-width: 1199px) {
+    
+}
+
+@media (max-width: 991px) {
+    
+}
+
+@media (max-width: 767px) {
+    .container {
+        max-width: 500px;
+    }
+
+    .avatar__plus {
+        left: 350px;
+        bottom: 50px;
+    }
+}
+
+@media (max-width: 575px) {
+    .container {
+        max-width: 300px;
+    }
+
+    .back-button__icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .avatar__plus {
+        left: 210px;
+        bottom: 50px;
+    }
+
+    .title {
+        font-size: 2.3em;
+    }
+
+    .avatar__icon {
+        height: 180px;
+        width: 180px;
+        padding: 30px;
+    }
+
+    .input-icon-block input {
+        padding-right: 2rem;
+    }
+
+    .bottom-input-blocks .input-icon-block .input-sex {
+        width: 130px;
+    }
+
+    .bottom-input-blocks .input-icon-block .input-date {
+        width: 165px;
+    }
+}

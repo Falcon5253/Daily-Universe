@@ -1,21 +1,45 @@
+:root {
+    --background-color: white;
+    --text-color: #16171B;
+    --svg-color: #16171B;
+    --button-color: #C4C4C4;
+    --button-active-color: #A7A7A7;
+    --invert-svg-color: 0;
+    --forgot-password: rgb(123, 123, 123);
+}
+
+body[data-theme="dark"] {
+    --background-color: #202125;
+    --text-color: white;
+    --svg-color: white;
+    --button-color: #16171B;
+    --button-active-color: #101115;
+    --invert-svg-color: 1;
+    --forgot-password: rgb(123, 123, 123);
+}
+
 * { 
     margin: 0; 
     padding: 0; 
     box-sizing: border-box;
 }
 
+body {
+    background-color: var(--background-color);
+}
+
 a {
-text-decoration: none;
-font-family: arial;
+    text-decoration: none;
+    font-family: arial;
 }
 
 li {
-list-style-type: none;
-font-family: arial;
+    list-style-type: none;
+    font-family: arial;
 }
 
 p, span, h2 {
-font-family: arial;
+    font-family: arial;
 }
 
 /* header */
@@ -28,12 +52,13 @@ font-family: arial;
 
 .header__text {
     margin: 0 auto;
+    color: var(--text-color);
     text-align: center;
     font-size: 45px;
     padding: 40px;
     border-radius: 100px;
     width: 500px;
-    border: 5px black solid; 
+    border: 5px var(--svg-color) solid; 
 }   
 
 /* main */
@@ -44,6 +69,7 @@ font-family: arial;
     margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
+    filter: invert(var(--invert-svg-color));
 }
 
 /* footer */
@@ -57,8 +83,8 @@ font-family: arial;
 .footer__text {
     max-width: 1440px;
     margin: 0 auto;
-    color: black;
-    background-color: #C4C4C4;
+    color: var(--text-color);
+    background-color: var(--button-color);
     font-size: 40px;
     border-radius: 80px;
     padding: 10px 25px 10px 25px;
@@ -71,12 +97,12 @@ font-family: arial;
 .footer__text-forgot-password {
     font-size: 15px;
     padding-left: 30px;
-    color: rgb(123, 123, 123);
+    color: var(--forgot-password);
     margin-bottom: 50px;
 }
 
 .footer__text-bottom {
-    border: 5px black solid;
+    border: 5px var(--svg-color) solid;
     font-size: 30px;
     padding: 10px 40px 10px 40px;
 }
