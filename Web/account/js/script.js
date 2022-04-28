@@ -1,7 +1,4 @@
 const userName = document.getElementById("name");
-
-userName.innerHTML = localStorage.getItem("userName");
-
 const inputName = document.querySelector(".input-name");
 const inputEmail = document.querySelector(".input-email");
 const inputPassword = document.querySelector(".input-password");
@@ -9,60 +6,81 @@ const inputNickname = document.querySelector(".input-nickname");
 const inputDate = document.querySelector(".input-date");
 const inputSex = document.querySelector(".input-sex");
 
+let isAuthorized = false;
+
 document.addEventListener("DOMContentLoaded", () => {
-    inputName.value = localStorage.getItem("userName");
-    inputEmail.value = localStorage.getItem("userEmail");
-    inputPassword.value = localStorage.getItem("userPassword");
-    inputNickname.value = localStorage.getItem("userNickname");
-    inputDate.value = localStorage.getItem("userDate");
-    inputSex.value = localStorage.getItem("userSex");
+    if (localStorage.activeUserIndex == "unknown" || localStorage.activeUserIndex == undefined) {
+        alert("Авторизуйтесь!");
+    } else {
+        isAuthorized = true;
+        let users = JSON.parse(localStorage.users);
+        userName.innerHTML = users.name[localStorage.activeUserIndex];
+        inputName.value = users.name[localStorage.activeUserIndex];
+        inputEmail.value = users.email[localStorage.activeUserIndex];
+        inputPassword.value = users.password[localStorage.activeUserIndex];
+        inputNickname.value = users.nickname[localStorage.activeUserIndex];
+        inputDate.value = users.date[localStorage.activeUserIndex];
+        inputSex.value = users.sex[localStorage.activeUserIndex];
+    }
 });
 
 document.querySelector(".btnName").addEventListener('click', event => {
-    if (localStorage.userName == undefined) {
-        localStorage.setItem("userName", inputName.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.name[localStorage.activeUserIndex] = inputName.value;
+        localStorage.users = JSON.stringify(users);
+        userName.innerHTML = users.name[localStorage.activeUserIndex];
     } else {
-        localStorage.userName = inputName.value;
+        alert("Авторизуйтесь!");
     }
-    userName.innerHTML = localStorage.getItem("userName");
 });
 
 document.querySelector(".btnEmail").addEventListener('click', event => {
-    if (localStorage.userEmail == undefined) {
-        localStorage.setItem("userEmail", inputEmail.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.email[localStorage.activeUserIndex] = inputEmail.value;
+        localStorage.users = JSON.stringify(users);
     } else {
-        localStorage.userEmail = inputEmail.value;
+        alert("Авторизуйтесь!");
     }
 });
 
 document.querySelector(".btnPassword").addEventListener('click', event => {
-    if (localStorage.userPassword == undefined) {
-        localStorage.setItem("userPassword", inputPassword.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.password[localStorage.activeUserIndex] = inputPassword.value;
+        localStorage.users = JSON.stringify(users);
     } else {
-        localStorage.userPassword = inputPassword.value;
+        alert("Авторизуйтесь!");
     }
 });
 
 document.querySelector(".btnNickname").addEventListener('click', event => {
-    if (localStorage.userNickname == undefined) {
-        localStorage.setItem("userNickname", inputNickname.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.nickname[localStorage.activeUserIndex] = inputNickname.value;
+        localStorage.users = JSON.stringify(users);
     } else {
-        localStorage.userNickname = inputNickname.value;
+        alert("Авторизуйтесь!");
     }
 });
 
 document.querySelector(".btnDate").addEventListener('click', event => {
-    if (localStorage.userDate == undefined) {
-        localStorage.setItem("userDate", inputDate.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.date[localStorage.activeUserIndex] = inputDate.value;
+        localStorage.users = JSON.stringify(users);
     } else {
-        localStorage.userDate = inputDate.value;
+        alert("Авторизуйтесь!");
     }
 });
 
 document.querySelector(".btnSex").addEventListener('click', event => {
-    if (localStorage.userSex == undefined) {
-        localStorage.setItem("userSex", inputSex.value)
+    if (isAuthorized) {
+        let users = JSON.parse(localStorage.users);
+        users.sex[localStorage.activeUserIndex] = inputSex.value;
+        localStorage.users = JSON.stringify(users);
     } else {
-        localStorage.userSex = inputSex.value;
+        alert("Авторизуйтесь!");
     }
 });
