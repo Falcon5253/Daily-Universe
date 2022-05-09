@@ -9,6 +9,11 @@
 	margin: 30px auto;
 	font-size: 45px;
 }
+.back-button {
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+}
 .quest{
 	text-align: center;
 	border-radius: 20px;
