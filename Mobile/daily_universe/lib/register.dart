@@ -16,7 +16,7 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   @override
-  final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
+  final _sizeTextWhite = TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
   String gender = 'Пол';
   String _name=''; int _age=0; int _gender=0; String _mail=''; String _passHash='';
@@ -150,7 +150,7 @@ class _RegistrationState extends State<Registration> {
                        Container(
                          padding: EdgeInsets.only(top: 40.0),
                          child:  DropdownButton<String>(
-                           style: const TextStyle(color: d.defaultTextColor),
+                           style: TextStyle(color: d.defaultTextColor),
                            items: <String>['Пол','М', 'Ж'].map((String value) {
                              return DropdownMenuItem<String>(
                                value: value,

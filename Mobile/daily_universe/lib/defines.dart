@@ -18,9 +18,26 @@ late int deviceRealWidth; //Ширина в пикселях текущего у
 late int deviceRealHeight; //Высота в пикселях текущего уст-ва
 late int deviceVirtualWidth;
 late int deviceVirtualHeight;
-const Color defaultTextColor = Colors.white;
+
+Color defaultTextColor = Colors.white;
 Color? defaultBackgroundColor = Colors.grey[900];
-ColorScheme? defaultTopColor = const ColorScheme.light().copyWith( primary: Colors.grey);
-Widget? defaultTitle = const Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
-const defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: Colors.white),);
-final defaultUnderLineDropDownListColor = Container( height: 2, color: Colors.grey,);
+ColorScheme? defaultTopColor = ColorScheme.light().copyWith( primary: Colors.grey);
+Widget? defaultTitle = Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
+var defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: Colors.white),);
+var defaultUnderLineDropDownListColor = Container( height: 2, color: Colors.grey,);
+
+//переменные из настроек.............
+double appVolume = 0.5;
+bool isSound = true;
+bool isDarkTheme = true;
+
+void updateOptionsTheme()
+{
+  defaultTextColor = isDarkTheme?Colors.white:Colors.black;
+  defaultBackgroundColor = isDarkTheme?Colors.grey[900]:Colors.white;
+  defaultTitle = Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
+  defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: defaultTextColor),);
+  defaultUnderLineDropDownListColor = isDarkTheme?Container( height: 2, color: Colors.grey,):Container( height: 2, color: Colors.grey[600],);
+}
+//Конец переменных из настроек........
+

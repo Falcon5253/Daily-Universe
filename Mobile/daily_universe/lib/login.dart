@@ -17,7 +17,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   @override
-  final _sizeTextWhite = const TextStyle(fontSize: 20.0, color: d.defaultTextColor);
+  final _sizeTextWhite = TextStyle(fontSize: 20.0, color: d.defaultTextColor);
   final formKey = GlobalKey<FormState>();
   bool isChecked = false;
   String currentMail = '';
@@ -70,6 +70,11 @@ class _LoginState extends State<Login> {
       while(currentMail.compareTo('')==0 && currentMail.compareTo('-1')!=0)
         {
           await Future.delayed(Duration(milliseconds: 10));
+        }
+      if (currentMail.compareTo('-1')==0)
+        {
+          currentMail = '';
+          return;
         }
       final userDb = await openDatabase(d.dbName);
       var data = await userDb.rawQuery('SELECT passHash, userId from users WHERE mail = \'$currentMail\'');
@@ -148,7 +153,7 @@ class _LoginState extends State<Login> {
                         validator: (val) {
                           if(val!=null && val!='') {
                             checkPass(val);
-                            return null;
+                            return 'Неправильная почта или пароль';
                             //if(true)//sha512.convert(utf8.encode(val)).toString()==d.dailyUser.passHash)
                            // {
                            //   return null;

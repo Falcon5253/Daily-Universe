@@ -43,6 +43,7 @@ dev_dependencies:
   sqflite: any
   crypto: any
   path_provider: any
+  url_launcher: any
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
