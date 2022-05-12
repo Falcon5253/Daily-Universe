@@ -5,10 +5,11 @@ import 'users.dart';
 import 'defines.dart' as d;
 import 'register.dart';
 import 'login.dart';
-import 'crossroads.dart';
+import 'main_menu.dart';
 import 'calendar.dart';
 import 'instruction.dart';
 import 'options.dart';
+import 'checkboxex1.dart';
 
 /*
 stless быстрое создание класса с виджетом; initstate быстрое создание функции
@@ -30,12 +31,18 @@ void checkAutoLogin() async{
   if(temp.isNotEmpty){
   Map data = temp[0];
   d.AutoLogin = data.values.elementAt(1)>0? 1:0;}
-  //print(d.isAutoLogin);
+  d.sqlTables = (await userDb
+      .query('sqlite_master', where: 'type = ?', whereArgs: ['table']))
+      .map((row) => row['name'] as String)
+      .toList(growable: false);
   getLastUserId(userDb);
+  checkMails(userDb);
 }
 
 void getLastUserId(Database userDb)async{
-  await userDb.execute('CREATE TABLE IF NOT EXISTS users(userId INTEGER PRIMARY KEY)');
+  if(!d.sqlTables.contains('users'))
+    {return;}
+  //await userDb.execute('CREATE TABLE IF NOT EXISTS users(userId INTEGER PRIMARY KEY)');
   final List temp = await userDb.rawQuery('SELECT userId from users');
   if(temp.isNotEmpty){
     Map data =  await temp.last;
@@ -43,20 +50,33 @@ void getLastUserId(Database userDb)async{
   }
 }
 
+void checkMails(Database userDb)async {
+    if(!d.sqlTables.contains('users'))
+    {return;}
+    final List temp = await userDb.rawQuery('SELECT mail from users');
+    if (temp.isNotEmpty) {
+      for (Map i in temp) {
+        d.userMails.add(i.values.elementAt(0));
+      }
+    }
+  }
+
+
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       colorScheme: d.defaultTopColor,
     ),
-    initialRoute: '/opt', //Временная замена исключительно для демонстрации
+    initialRoute: d.navStart, //Временная замена исключительно для демонстрации
     routes: {
-      '/': (context) => MainScreen(),
-      '/log': (context) => Login(),
-      '/reg': (context) => Registration(),
-      '/main': (context) => Crossroads(),
-      '/cal': (context) => Calendar(), // После слияний обязательно изменить путь на /main/cal
-      '/inst': (context) => Instruction(),
-      '/opt': (context) => Options(),
+      d.navStart: (context) => MainScreen(),
+      d.navLogin: (context) => Login(),
+      d.navReg: (context) => Registration(),
+      d.navMain: (context) => MainMenu(),
+      d.navCalendar: (context) => Calendar(), // После слияний обязательно изменить путь на /main/cal
+      d.navInstruction: (context) => Instruction(),
+      d.navOptions: (context) => Options(),
+      d.navCheckbox: (context) => MainCB(),
     },
   ));
 
@@ -105,7 +125,7 @@ class MainScreen extends StatelessWidget {
                     await Future.delayed(Duration(milliseconds: 10));
                   }
                 }
-              Navigator.pushNamed(context, d.AutoLogin>0?'/main':'/log');
+              Navigator.pushNamed(context, d.AutoLogin>0?d.navMain:d.navLogin);
             }, child: Text('Войти в аккаунт', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
             Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/128)),
@@ -113,7 +133,7 @@ class MainScreen extends StatelessWidget {
               width: d.deviceRealWidth/4,
               height: d.deviceRealHeight/30,
               child: ElevatedButton(onPressed: () {
-                Navigator.pushNamed(context, '/reg');
+                Navigator.pushNamed(context, d.navReg);
               }, child: Text('Зарегистрироваться', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
 

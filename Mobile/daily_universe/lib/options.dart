@@ -77,7 +77,7 @@ class _OptionsState extends State<Options> {
                       setState((){
                         d.isDarkTheme = false;});
                         d.updateOptionsTheme();
-                      Navigator.pushReplacementNamed(context, '/opt');
+                      Navigator.pushReplacementNamed(context, d.navOptions);
                     }, child: Text('Светлая', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
                   ),
                   Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/128)),
@@ -88,7 +88,7 @@ class _OptionsState extends State<Options> {
                       setState((){
                       d.isDarkTheme = true;});
                       d.updateOptionsTheme();
-                      Navigator.pushReplacementNamed(context, '/opt');
+                      Navigator.pushReplacementNamed(context, d.navOptions);
                     }, child: Text('Темная', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
                   ),
                 ]),

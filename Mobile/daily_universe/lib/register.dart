@@ -26,7 +26,7 @@ class _RegistrationState extends State<Registration> {
     }
     void performLogin() {
       hideKeyboard();
-      Navigator.pushReplacementNamed(context, '/main');
+      Navigator.pushReplacementNamed(context, d.navMain);
     }
     void submit() {
       final form = formKey.currentState;
@@ -36,7 +36,8 @@ class _RegistrationState extends State<Registration> {
          d.AutoLogin=0;
           form.save();
           d.dailyUser = User.reg(_name, _age, _gender, _mail, _passHash);
-          d.dailyUser.updateConfigValue(d.localConfigs[0], 0,);
+          d.dailyUser.updateConfigValue(d.localConfigs[1], 0,);
+          d.userMails.add(_mail);
           performLogin();
         }
       }
@@ -61,6 +62,8 @@ class _RegistrationState extends State<Registration> {
                       //d.dailyUser.updateDataBaseValue('mail', d.dailyUser.mail);
                       },
                     validator: (val) {
+                      if(d.userMails.contains(val))
+                        {return 'Почта уже зарегистрирована';}
                       if(val!=null && val!='') {
                         return !val.contains("@") ? 'Not a valid email.' : null;
                       }

@@ -40,6 +40,14 @@ class Instruction extends StatelessWidget {
                 launchUrl(_url);
               }, child: Text('Посмотреть', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
             ),
+            Padding(padding: EdgeInsets.only(top: d.deviceRealHeight/48)),
+            SizedBox(
+              width: d.deviceRealWidth/4,
+              height: d.deviceRealHeight/30,
+              child: ElevatedButton(onPressed: () {
+                Navigator.pop(context);
+              }, child: Text('Продолжить', style: TextStyle(color: d.defaultTextColor, fontSize: 18)),),
+            ),
           ],
         )
     );

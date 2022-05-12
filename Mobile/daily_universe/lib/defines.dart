@@ -10,6 +10,8 @@ const List userParams = ['userId','name', 'age', 'city','gender','mail','passHas
 const List sqlDataTypes = ['INTEGER', 'TEXT', 'REAL']; // типы данных для sql, количество фиксированное, повторы не нужны
 const List typesGender = ['Не указан', 'Мужской', 'Женский'];
 const String dbName = 'my_db.db';
+List userMails = []; // список почт зарегистрированных пользователей, берётся из скл таблицы при запуске программы
+List sqlTables = []; //список таблиц которые созданы в sql базе, нужны для проверок валидности
 int lastUserId = 0;
 int AutoLogin = 0;
 const List localConfigs = ['userId','autoLogin'];
@@ -25,6 +27,17 @@ ColorScheme? defaultTopColor = ColorScheme.light().copyWith( primary: Colors.gre
 Widget? defaultTitle = Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
 var defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: Colors.white),);
 var defaultUnderLineDropDownListColor = Container( height: 2, color: Colors.grey,);
+
+//Переменные для навигации..........
+const navStart = '/';
+const navLogin = '/log';
+const navReg = '/reg';
+const navMain = '/main';
+const navCalendar = '/main/cal';
+const navInstruction = '/main/inst';
+const navOptions = '/main/opt';
+const navCheckbox = '/main/box';
+//Конец переменных для навигации.........
 
 //переменные из настроек.............
 double appVolume = 0.5;

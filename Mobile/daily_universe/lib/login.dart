@@ -34,24 +34,12 @@ class _LoginState extends State<Login> {
       }
       return Colors.green;
     }
-    void checkMail(val) async
-    {
-      final userDb = await openDatabase(d.dbName);
-      var data = await userDb.rawQuery('SELECT mail from users');
-      for (Map temp in data)
-      {
-        String _mail = temp.values.elementAt(0);
-        if (_mail.compareTo(val)==0)
-        {currentMail = val; return;}
-      }
-      currentMail = '-1';
-    }
     void hideKeyboard() {
       FocusScope.of(context).unfocus();
     }
     void performLogin() {
       hideKeyboard();
-      Navigator.pushReplacementNamed(context, '/main');
+      Navigator.pushReplacementNamed(context, d.navMain);
     }
     void resultLogin() async
     {
@@ -84,7 +72,7 @@ class _LoginState extends State<Login> {
         if (_pass.compareTo(_passHash)==0)
         {currentId = temp.values.elementAt(1); resultLogin();return;}
       }
-     // currentId = -1;
+      currentMail = '';
     }
     void submit() async{
       final form = formKey.currentState;
@@ -126,10 +114,9 @@ class _LoginState extends State<Login> {
                         },
                         validator: (val) {
                           if(val!=null && val!='') {
-                           checkMail(val);
-                             // res.then((value) {
-                               // return value ? null : 'Такой почты нет';
-                             // });
+                            if(!d.userMails.contains(val))
+                              {print(d.userMails); print(val); return 'Такой почты нет';}
+                            currentMail = val;
                             return null;
                           }
                           return 'Empty email field';
@@ -154,11 +141,6 @@ class _LoginState extends State<Login> {
                           if(val!=null && val!='') {
                             checkPass(val);
                             return 'Неправильная почта или пароль';
-                            //if(true)//sha512.convert(utf8.encode(val)).toString()==d.dailyUser.passHash)
-                           // {
-                           //   return null;
-                           // }
-                           // else {return 'Пароли не совпадают';}
                           }
                           return 'Empty password field';
                         },
