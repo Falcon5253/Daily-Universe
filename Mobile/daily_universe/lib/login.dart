@@ -100,6 +100,9 @@ class _LoginState extends State<Login> {
       resizeToAvoidBottomInset: false,
       backgroundColor: d.defaultBackgroundColor,
       appBar: AppBar(
+        leading: BackButton(
+            color: d.defaultTextColor
+        ),
         title: d.defaultTitle,
         centerTitle: true,
       ),
@@ -140,7 +143,7 @@ class _LoginState extends State<Login> {
                         validator: (val) {
                           if(val!=null && val!='') {
                             checkPass(val);
-                            return 'Неправильная почта или пароль';
+                            return null;
                           }
                           return 'Empty password field';
                         },

@@ -25,6 +25,13 @@ class _MainMenuState extends State<MainMenu> {
     return Scaffold(
       backgroundColor: d.defaultBackgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: d.defaultTextColor),
+          onPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.pushReplacementNamed(context, d.navStart);
+            },
+        ),
         title: d.defaultTitle,
         centerTitle: true,
       ),

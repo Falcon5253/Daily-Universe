@@ -46,6 +46,9 @@ class _RegistrationState extends State<Registration> {
       resizeToAvoidBottomInset: false,
       backgroundColor: d.defaultBackgroundColor,
       appBar: AppBar(
+        leading: BackButton(
+            color: d.defaultTextColor
+        ),
         title: d.defaultTitle,
         centerTitle: true,
       ),

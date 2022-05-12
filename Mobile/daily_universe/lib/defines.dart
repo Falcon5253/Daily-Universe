@@ -14,7 +14,7 @@ List userMails = []; // список почт зарегистрированны
 List sqlTables = []; //список таблиц которые созданы в sql базе, нужны для проверок валидности
 int lastUserId = 0;
 int AutoLogin = 0;
-const List localConfigs = ['userId','autoLogin'];
+const List localConfigs = ['userId','autoLogin', 'isDarkTheme'];
 bool firstClassInit = true;
 late int deviceRealWidth; //Ширина в пикселях текущего уст-ва
 late int deviceRealHeight; //Высота в пикселях текущего уст-ва
@@ -27,6 +27,7 @@ ColorScheme? defaultTopColor = ColorScheme.light().copyWith( primary: Colors.gre
 Widget? defaultTitle = Text('Daily universe', style: TextStyle(color: defaultTextColor, fontSize: 28));
 var defaultUnderLineTextInputColor = UnderlineInputBorder(borderSide: BorderSide(color: Colors.white),);
 var defaultUnderLineDropDownListColor = Container( height: 2, color: Colors.grey,);
+
 
 //Переменные для навигации..........
 const navStart = '/';
