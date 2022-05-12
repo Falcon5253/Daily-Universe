@@ -64,13 +64,13 @@ void main() {
     theme: ThemeData(
       colorScheme: d.defaultTopColor,
     ),
-    initialRoute: d.navStart, //Временная замена исключительно для демонстрации
+    initialRoute: d.navStart, 
     routes: {
       d.navStart: (context) => MainScreen(),
       d.navLogin: (context) => Login(),
       d.navReg: (context) => Registration(),
       d.navMain: (context) => MainMenu(),
-      d.navCalendar: (context) => Calendar(), // После слияний обязательно изменить путь на /main/cal
+      d.navCalendar: (context) => Calendar(), 
       d.navInstruction: (context) => Instruction(),
       d.navOptions: (context) => Options(),
       d.navCheckbox: (context) => MainCB(),
