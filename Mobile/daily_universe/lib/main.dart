@@ -1,6 +1,16 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'users.dart';
+import 'defines.dart' as d;
+import 'register.dart';
+import 'login.dart';
+import 'main_menu.dart';
+import 'calendar.dart';
+import 'instruction.dart';
+import 'options.dart';
+import 'checkboxex1.dart';
 
-<<<<<<< HEAD
-=======
 /*
 stless быстрое создание класса с виджетом; initstate быстрое создание функции
 primaryColor менять на colorScheme: ColorScheme.light().copyWith( primary: Colors.deepOrangeAccent)
@@ -129,4 +139,3 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
->>>>>>> origin/options
