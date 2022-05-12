@@ -213,7 +213,7 @@ class User {
   }
   void rebuildDataBase()
   {
-    String result = 'DROP TABLE users;';
+    String result = 'DROP TABLE users; DROP TABLE config;';
     userDb.then((db) {
       final temp = db.execute(result);
       temp.whenComplete(() => exit(0));

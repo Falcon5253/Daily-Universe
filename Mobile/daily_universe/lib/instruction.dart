@@ -13,6 +13,9 @@ class Instruction extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: d.defaultBackgroundColor,
         appBar: AppBar(
+          leading: BackButton(
+              color: d.defaultTextColor
+          ),
           title: d.defaultTitle,
           centerTitle: true,
         ),
