@@ -16,14 +16,21 @@ stless быстрое создание класса с виджетом; initsta
 primaryColor менять на colorScheme: ColorScheme.light().copyWith( primary: Colors.deepOrangeAccent)
  */
 
+<<<<<<< HEAD
+// Если возникли ошибки с таблицей config или users вызовите функцию rebuildDataBase() из файла users.dart
+=======
+>>>>>>> f35f1c47d27ae82ed28c5b49715d69cef8f5bfcb
 
 void checkAutoLogin() async{
   final userDb = await openDatabase(d.dbName);
-  await userDb.execute('CREATE TABLE IF NOT EXISTS config(userId INTEGER PRIMARY KEY, ${d.localConfigs[1]} INTEGER)');
+  await userDb.execute('CREATE TABLE IF NOT EXISTS config(userId INTEGER PRIMARY KEY, ${d.localConfigs[1]} INTEGER, ${d.localConfigs[2]} INTEGER)');
   final List temp = await userDb.rawQuery('SELECT * from config WHERE userId = 1');
   if(temp.isNotEmpty){
   Map data = temp[0];
-  d.AutoLogin = data.values.elementAt(1)>0? 1:0;}
+  d.AutoLogin = data.values.elementAt(1)>0? 1:0;
+  d.isDarkTheme = data.values.elementAt(2)>0? false:true;
+  d.updateOptionsTheme();
+  }
   d.sqlTables = (await userDb
       .query('sqlite_master', where: 'type = ?', whereArgs: ['table']))
       .map((row) => row['name'] as String)
@@ -134,7 +141,11 @@ class MainScreen extends StatelessWidget {
         )
     );
   }
+<<<<<<< HEAD
+}
+=======
 }
 
 
 
+>>>>>>> f35f1c47d27ae82ed28c5b49715d69cef8f5bfcb
